@@ -1,28 +1,33 @@
-name: My First GitHub Actions
+name: Java CI with Maven
 
 on: [push]
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+jobs: build: runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        java-version: [11, 17]
+strategy:
+  matrix:
+    java-version: [11, 17]
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        java-version: ${{ matrix.java-version }}
+steps:
+- name: Checkout Repository
+  uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest
+- name: Set up JDK
+  uses: actions/setup-java@v3
+  with:
+    distribution: 'temurin'
+    java-version: ${{ matrix.java-version }}
 
-    - name: Run tests
-      run: |
-        cd src
-        python -m pytest addition.py
+- name: Cache Maven dependencies
+  uses: actions/cache@v3
+  with:
+    path: ~/.m2
+    key: maven-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+    restore-keys: |
+      maven-${{ runner.os }}-
+
+- name: Build with Maven
+  run: mvn clean install
+
+- name: Run Tests
+  run: mvn test
