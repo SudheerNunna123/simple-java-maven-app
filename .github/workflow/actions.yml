@@ -1,12 +1,15 @@
-name: Java CI with Maven
+name: My First GitHub Actions
 
 on: [push]
 
-jobs: build: runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-strategy:
-  matrix:
-    java-version: [11, 17]
+    strategy:
+      matrix:
+        java-version: [11, 17]
+
 
 steps:
 - name: Checkout Repository
