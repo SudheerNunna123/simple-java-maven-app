@@ -1,7 +1,7 @@
 name: Main Java Pipeline  # Main workflow to trigger the reusable Java build
 
 on: 
-  [push]  # Run this workflow on every push event
+  [push]  # Run this workflow on every push events
 
 jobs:
   call-build:
